@@ -12,7 +12,7 @@ class Status(models.Model):
     field_status = models.CharField(primary_key=True, max_length=45)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'Status'
 
 
@@ -22,7 +22,7 @@ class DjangoMigrations(models.Model):
     applied = models.DateTimeField()
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'django_migrations'
 
 
@@ -34,7 +34,7 @@ class ObsField(models.Model):
     field_status = models.ForeignKey(Status, models.DO_NOTHING, db_column='field_status')
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'obs_field'
 
 
@@ -52,7 +52,7 @@ class ObsRecords(models.Model):
     field_no = models.ForeignKey(ObsField, models.DO_NOTHING, db_column='field_no')
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'obs_records'
 
 
@@ -60,5 +60,5 @@ class Satellite(models.Model):
     sat_id = models.CharField(primary_key=True, max_length=10)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'satellite'

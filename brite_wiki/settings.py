@@ -75,7 +75,17 @@ WSGI_APPLICATION = 'brite_wiki.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
+
     'default': {
+        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': os.path.join(BASE_DIR,'brite_obs'),
+        'NAME': 'django_site',
+        'USER': 'wiki_user',
+        'PASSWORD': 'tuxdolphin!257',
+        'HOST': '',  # Set to empty string for localhost.
+        'PORT': '',  # Set to empty string for default.
+    },
+    'brite_obs': {
         'ENGINE': 'django.db.backends.mysql',
 #        'NAME': os.path.join(BASE_DIR,'brite_obs'),
         'NAME': 'brite_obs',
