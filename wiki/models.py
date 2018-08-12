@@ -5,6 +5,7 @@
 #   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
+from __future__ import unicode_literals
 from django.db import models
 
 
@@ -36,6 +37,18 @@ class ObsField(models.Model):
     class Meta:
         managed = False
         db_table = 'obs_field'
+#        database = 'brite_obs'
+    # necessary for converting model into something readable
+
+    def __str__(self):
+        return self.field_name
+
+class Satellite(models.Model):
+    sat_id = models.CharField(primary_key=True, max_length=10)
+
+    class Meta:
+        managed = False
+        db_table = 'satellite'
 
 
 class ObsRecords(models.Model):
@@ -50,15 +63,27 @@ class ObsRecords(models.Model):
     obs_mode = models.CharField(max_length=10)
     availability = models.CharField(max_length=45)
     field_no = models.ForeignKey(ObsField, models.DO_NOTHING, db_column='field_no')
+    setup = models.IntegerField(null=False)
 
     class Meta:
         managed = False
         db_table = 'obs_records'
 
-
-class Satellite(models.Model):
-    sat_id = models.CharField(primary_key=True, max_length=10)
-
-    class Meta:
-        managed = False
-        db_table = 'satellite'
+    @classmethod
+    def create_obsrecord(cls, record, field_no):
+        db = 'brite_obs'
+        obsrecord = cls()
+        # change values to fit database structure
+        setup = record[7][5:]
+        obsrecord.star_id = record[1]
+        obsrecord.star_name = record[4]
+        obsrecord.sp_type = record[3]
+        obsrecord.obs_start = record[8]
+        obsrecord.obs_end = record[9]
+        obsrecord.sat = Satellite.objects.using(db).get(sat_id=record[6])
+        obsrecord.no_obs = record[11]
+        obsrecord.obs_mode = record[20]
+        obsrecord.setup = setup
+        obsrecord.field_no = ObsField.objects.using(db).get(field_no=field_no)
+#        obsrecord.sat = record[6]
+        return obsrecord

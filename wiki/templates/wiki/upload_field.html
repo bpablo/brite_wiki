@@ -1,0 +1,29 @@
+<form enctype="multipart/form-data" method="post">
+  {% csrf_token %}
+
+  <div>
+      {{ FormField.field.label_tag }} {{ FormField.field }}
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12" style="margin-top: 20px">
+            {{ file_upload_form.report.label_tag }} <span class="required-field">*</span> {{ file_upload_form.report }}
+
+    </div>
+<!--
+  <div>
+      {{ FileField.label_tag }} <span class="required-field">*</span> {{ FileField.report }}
+  </div>
+-->
+  <div>
+    <button type='submit', name='submit', style="width: 120px;">Submit</button>
+  </div>
+
+<!--
+    <div>
+      <label for="mail">E-mail:</label>
+      <input type="email" id="mail" name="user_mail">
+    </div>
+
+ -->
+</form>
